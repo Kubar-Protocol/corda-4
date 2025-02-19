@@ -66,8 +66,6 @@ You can interact with the running CorDapp in several ways:
 
 Run the available integration, contract, and flow tests from IntelliJ or via Gradle to verify the CorDapp functionality.
 
-Below is an example of a short README-style documentation you can share with others. It explains the prerequisites, how to build the container image (if needed), and how to run the containerized application.
-
 ---
 
 # Cordapp Clients – Containerized Application
@@ -147,9 +145,6 @@ This image uses the Eclipse Temurin JDK 8 runtime to run the jar file.
 
 ---
 
-By following these steps, you (and others you share this with) will be able to build and run the containerized Cordapp Clients application using Docker.
-
-Feel free to modify this documentation to suit any additional configuration details specific to your environment.
 ## Additional Information
 
 For further details on the sample CorDapp’s project structure, node configuration, and testing strategies, refer to the official [Corda 4.10 Sample CorDapp Tutorial](https://docs.r3.com/en/platform/corda/4.10/community/tutorial-cordapp.html) 
