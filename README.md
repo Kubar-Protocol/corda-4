@@ -66,6 +66,90 @@ You can interact with the running CorDapp in several ways:
 
 Run the available integration, contract, and flow tests from IntelliJ or via Gradle to verify the CorDapp functionality.
 
+Below is an example of a short README-style documentation you can share with others. It explains the prerequisites, how to build the container image (if needed), and how to run the containerized application.
+
+---
+
+# Cordapp Clients – Containerized Application
+
+This document describes how to run the containerized Cordapp Clients application using Docker. The application is built with Gradle and packaged into an executable jar file. The Docker image uses Eclipse Temurin’s JDK 8 runtime.
+
+## Prerequisites
+
+- **Docker:** Ensure Docker is installed on your system.  
+  [Get Docker](https://docs.docker.com/get-docker/)
+
+- **Access to the Source or Pre-built Image:**  
+  Either build the Docker image yourself (instructions below) or pull the image from a container registry if available.
+
+## Building the Application
+
+1. **Generate the Executable Jar:**  
+   In the project root, run:
+   ```shell
+   ./gradlew clean jar
+   ```
+   This creates an executable jar in the `build/libs/` folder (e.g. `cordapp-example-0.1.jar`). Make sure your `build.gradle` includes a manifest with your main class:
+   ```groovy
+   jar {
+       manifest {
+           attributes(
+               'Main-Class': 'com.example.Main'  // Replace with your main class
+           )
+       }
+   }
+   ```
+
+2. **Build the Docker Image:**  
+   From the project root (where the Dockerfile is located), run:
+   ```shell
+   docker build -t cordapp-clients .
+   ```
+
+## Running the Container
+
+1. **Run the Docker Container:**  
+   Use the following command to start the container and map port 50005 (adjust the port if your application uses a different one):
+   ```shell
+   docker run -p 50005:50005 cordapp-clients
+   ```
+
+2. **Access the Application:**  
+   - Open a web browser and navigate to:  
+     `http://localhost:50005`
+   - Alternatively, if your application exposes specific endpoints (e.g., `/status`), navigate to those.
+
+## Dockerfile Overview
+
+The Dockerfile used in this project is:
+
+```dockerfile
+FROM eclipse-temurin:8-jre
+WORKDIR /app
+# Copy the executable jar (ensure the name matches the generated jar)
+COPY build/libs/cordapp-example-0.1.jar app.jar
+EXPOSE 50005
+ENTRYPOINT ["java", "-jar", "app.jar"]
+```
+
+This image uses the Eclipse Temurin JDK 8 runtime to run the jar file.
+
+## Troubleshooting
+
+- **Jar Not Found:**  
+  If Docker reports that the jar file cannot be found, verify that:
+  - You ran `./gradlew clean jar` successfully.
+  - The jar file exists in `build/libs` with the expected name.
+  - The COPY path in the Dockerfile exactly matches the jar file name.
+
+- **Port Mapping:**  
+  Ensure no other application is using port 50005. If necessary, update the Dockerfile’s EXPOSE instruction and the `docker run` command to use a different port.
+
+---
+
+By following these steps, you (and others you share this with) will be able to build and run the containerized Cordapp Clients application using Docker.
+
+Feel free to modify this documentation to suit any additional configuration details specific to your environment.
 ## Additional Information
 
 For further details on the sample CorDapp’s project structure, node configuration, and testing strategies, refer to the official [Corda 4.10 Sample CorDapp Tutorial](https://docs.r3.com/en/platform/corda/4.10/community/tutorial-cordapp.html) 
